@@ -27,6 +27,7 @@ graph LR
     F -->|Inference| G[(PREDICTIONS Table)]
     G -->|SQL| H[Dashboard]
 ```
+
 ### Key Engineering Decisions
 **1. Zero Data Movement:** All transformations (src/filter_data.py, src/transform_data.py) execute lazily on Snowflake warehouses. This allows processing of billions of rows without memory constraints on the client side.
 
