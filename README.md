@@ -40,16 +40,19 @@ graph LR
 ```
 ├── sp25_taxi_snowflake/
 │   ├── src/
-│   │   ├── filter_data.py      # Cleansing logic (Outlier removal via approx_percentile)
-│   │   ├── transform_data.py   # Feature engineering (Rolling windows, Lag features)
-│   │   └── utils.py            # Shared Snowflake session management
+│   │   ├── filter_data.py             # RAW -> FILTERED (rules + approx_percentile outliers)
+│   │   ├── transform_data.py          # FILTERED -> TRANSFORMED (hourly grid + fill missing)
+│   │   └── utils.py                   # Snowflake session helpers (if present)
 │   ├── sqls/
-│   │   └── dashboard.sql       # Analytical queries for comparing Actual vs. Predicted
-│   ├── notebooks/              # Exploratory Data Analysis (EDA) & Prototype Training
-│   └── requirements.txt        # Python dependencies (snowflake-snowpark-python, etc.)
+│   │   └── dashboard.sql              # Actual vs Predicted query for BI
+│   ├── notebooks/
+│   │   ├── 01_upload_data.ipynb       # Parquet -> CSV.GZ -> Stage -> RAW
+│   │   └── 02_train_and_predict.ipynb # Feature eng + Optuna + LightGBM + predictions
+│   └── requirements.txt
 ├── .gitignore
-├── README.md
-└── .env.example                # Template for Snowflake credentials
+├── .env.example
+└── README.md
+
 ```
 ### 🚀 Getting Started
 **Prerequisites**
@@ -90,7 +93,7 @@ Step 4: Train & Predict Trains the LightGBM model on the Gold layer and writes p
 Run `notebooks/02_train_and_predict.ipynb`
 
 ### 📊 Results & Dashboarding
-You can visualize the model performance directly in Snowflake using Snowsight Dashboards or by running the SQL queries found in sqls/dashboard.sql.
+You can visualize the model performance directly in Snowflake using Snowsight Dashboards or by running the SQL queries found in `sqls/dashboard.sql`
 
 1. Target Metric: Demand (Rides per Hour per Zone)
 
@@ -103,5 +106,5 @@ You can visualize the model performance directly in Snowflake using Snowsight Da
 
 3. Orchestration: Deploy an Apache Airflow DAG to trigger the pipeline steps on a daily schedule.
 
-### Author: 
+### 👤 Author: 
 Sharmila Devi
