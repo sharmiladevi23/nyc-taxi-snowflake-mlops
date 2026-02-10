@@ -23,7 +23,7 @@ graph LR
     B -->|Snowpark Filter| C[(FILTERED Layer)]
     C -->|Snowpark Transform| D[(TRANSFORMED Layer)]
     D -->|Feature Eng.| E[Snowpark ML]
-    E -->|Train (Optuna)| F[LightGBM Model]
+    E -->|Train with Optuna| F[LightGBM Model]
     F -->|Inference| G[(PREDICTIONS Table)]
     G -->|SQL| H[Dashboard]
 ```
